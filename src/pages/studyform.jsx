@@ -15,9 +15,15 @@ import {
   } from "@chakra-ui/react";
 
   import { ArrowBackIcon , AddIcon } from "@chakra-ui/icons";
+  import { useForm } from "react-hook-form";
 
 
   const StudyForm = () => {
+
+    const { register, handleSubmit , formState :{errors}} = useForm();
+    const onFormSubmit = (data) => console.log(data);
+
+
     return(
         <>
         <Box bg='white'  p={3} mb={5}  style={{borderRadius:"10px"}}>
@@ -41,14 +47,37 @@ import {
 
           </Flex>
         </Box>
-        <form>
+        <form onSubmit={handleSubmit(onFormSubmit)}>
             <Box bg='white'  p={4}  style={{borderRadius:"10px"}}>
                 <Stack spacing={4}>
-                    <FormControl isInvalid={true}>
+                    <FormControl isInvalid={errors?.name} >
                         <FormLabel color="gray.600">Name</FormLabel>
-                        <Input type='text' placeholder="Name" />
-                        <FormErrorMessage>Error Message</FormErrorMessage>
+                        <Input type='text' placeholder="Name" {
+                            ... register("name" ,{required:"Name Field Is Empyt"})
+                        }/>
+                        <FormErrorMessage>{errors?.name && errors.name.message}</FormErrorMessage>
                     </FormControl>
+
+                    <FormControl isInvalid={errors?.age}>
+                        <FormLabel color="gray.600">Age</FormLabel>
+                        <Input type='number' placeholder="Age" {
+                            ... register("age" ,{
+                                required:{
+                                    value :true,
+                                    message: "Age Field Is Empyt"
+                                },
+                                min:{
+                                    value :18,
+                                    message: "Age must be greater than"
+                                },
+                            })
+                        }/>
+                        <FormErrorMessage>{errors?.age && errors.age.message}</FormErrorMessage>
+                    </FormControl>
+
+                    <Button colorScheme="blue" type="submit">
+                       Submit
+                    </Button>
                 </Stack>
             </Box>
         </form>

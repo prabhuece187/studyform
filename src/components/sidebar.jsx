@@ -1,6 +1,6 @@
 'use client'
 
-import {Link as Navlink, Outlet} from 'react-router-dom';
+import {Link as Navlink} from 'react-router-dom';
 
 import {
   IconButton,
