@@ -11,16 +11,39 @@ import {
     FormErrorMessage,
     FormLabel,
     FormControl,
-    Input
+    Input,
+    Checkbox,
+    RadioGroup,
+    Radio,    
   } from "@chakra-ui/react";
 
   import { ArrowBackIcon , AddIcon } from "@chakra-ui/icons";
-  import { useForm } from "react-hook-form";
+  import { useForm, Controller } from "react-hook-form";
+  import { Select } from "chakra-react-select";
 
+  const states = [ 
+    {
+        value: 'Al',
+        label: 'Alabama'
+    },
+    {
+        value: 'Ak',
+        label: 'Alaska'
+    },
+    {
+        value: 'Az',
+        label: 'Arizona'
+    },    
+  ];
 
   const StudyForm = () => {
 
-    const { register, handleSubmit , formState :{errors}} = useForm();
+    const { 
+        register, 
+        handleSubmit,
+        formState :{errors},
+        control,
+        } = useForm();
     const onFormSubmit = (data) => console.log(data);
 
 
@@ -74,6 +97,112 @@ import {
                         }/>
                         <FormErrorMessage>{errors?.age && errors.age.message}</FormErrorMessage>
                     </FormControl>
+
+                    <FormControl isInvalid={errors.date_of_birth} >
+                        <FormLabel color="gray.600">Date</FormLabel>
+                        <Input type='date' {
+                            ... register("date_of_birth" ,{required:"Enter The date"})
+                        }/>
+                        <FormErrorMessage>{errors.date_of_birth && errors.date_of_birth.message}</FormErrorMessage>
+                    </FormControl>
+
+                    
+
+                    <Controller
+                    control={control}
+                    name="select_state"
+                    rules={{
+                        required:"Select the state plz",
+                    }}
+                    render={({
+                        field:{ onChange, onBlur, value,name, ref},
+                    }) => (
+                        <FormControl isInvalid={errors.select_state} >
+                        <FormLabel color="gray.600">State</FormLabel>
+                        <Select 
+                            name={name}
+                            onBlur={onBlur}
+                            value={value}
+                            ref={ref}
+                            options={states}
+                            getOptionLabel={(e)=> e.label}
+                            getOptionValue={(e)=> e.value}
+                            onChange={(e) => {
+                                onChange(e);
+                            }}
+                            placeholder="select state"
+                            closeMenuOnSelect={true}
+                        />
+                        <FormErrorMessage>{errors.select_state && errors.select_state.message}</FormErrorMessage>
+                    </FormControl>
+                    )}
+                    />
+
+                    <FormControl isInvalid={errors.language} >
+                        <FormLabel color="gray.600">Language</FormLabel>
+                            <Stack spacing={5} direction={"row"}>
+                                <Checkbox 
+                                    size="md"
+                                    colorScheme="blue" 
+                                    value="tamil"
+                                    {
+                                    ... register("language" ,{required:"plz select language"})
+                                }>
+                                    Tamil
+                                </Checkbox>
+                                <Checkbox 
+                                    size="md"
+                                    colorScheme="blue" 
+                                    value="english"
+                                    {
+                                    ... register("language" ,{required:"plz select language"})
+                                }>
+                                    English
+                                </Checkbox>
+                                <Checkbox 
+                                    size="md"
+                                    colorScheme="blue" 
+                                    value="spanish"
+                                    {
+                                    ... register("language" ,{required:"plz select language"})
+                                }>
+                                    Spanish
+                                </Checkbox>
+                            </Stack>
+                        <FormErrorMessage>{errors.language && errors.language.message}</FormErrorMessage>
+                    </FormControl>
+
+                    <FormControl isInvalid={errors.gender} >
+                        <FormLabel color="gray.600">Gender</FormLabel>
+                            <RadioGroup>
+                                <Stack  direction={"row"}>
+                                    <Radio 
+                                        value="male"
+                                        {
+                                        ... register("gender" ,{required:"plz select gender"})
+                                    }>
+                                        Male
+                                    </Radio>
+                                    <Radio  
+                                        value="female"
+                                        {
+                                        ... register("gender" ,{required:"plz select gender"})
+                                    }>
+                                        Female
+                                    </Radio>
+                                    <Radio 
+                                        value="other"
+                                        {
+                                        ... register("gender" ,{required:"plz select gender"})
+                                    }>
+                                        Other
+                                    </Radio>
+                                </Stack>
+                            </RadioGroup>
+                        <FormErrorMessage>{errors.gender && errors.gender.message}</FormErrorMessage>
+                    </FormControl>
+
+
 
                     <Button colorScheme="blue" type="submit">
                        Submit
