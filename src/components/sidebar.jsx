@@ -34,7 +34,8 @@ import {
 
 const LinkItems = [
   { name: 'Dashboard', icon: FiHome , to:'/dashboard'},
-  { name: 'StudyForm', icon: FiTrendingUp , to:'/studyform'}
+  { name: 'StudyForm', icon: FiTrendingUp , to:'/studyform'},
+  { name: 'DynamicForm', icon: FiTrendingUp , to:'/dynamicform'}
 ]
 
 const SidebarContent = ({ onClose, ...rest }) => {
