@@ -20,23 +20,14 @@ import {
   import { ArrowBackIcon , AddIcon } from "@chakra-ui/icons";
   import { useForm, Controller } from "react-hook-form";
   import { Select } from "chakra-react-select";
+  import { useSelector,useDispatch } from "react-redux";
 
-  const states = [ 
-    {
-        value: 'Al',
-        label: 'Alabama'
-    },
-    {
-        value: 'Ak',
-        label: 'Alaska'
-    },
-    {
-        value: 'Az',
-        label: 'Arizona'
-    },    
-  ];
+  import { clearState } from "../features/study/studySlice";
+
 
   const StudyForm = () => {
+    const {states} = useSelector((state) => state.study);
+    const dispatch = useDispatch();
 
     const { 
         register, 
@@ -67,6 +58,10 @@ import {
                     Add Districts
                 </Button>   
             </Link>
+
+            <Button colorScheme="blue" onClick={() => dispatch(clearState())}>
+                Clear State
+            </Button>
 
           </Flex>
         </Box>
